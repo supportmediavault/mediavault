@@ -75,8 +75,8 @@ export const SuggestionBox: React.FC<SuggestionBoxProps> = ({
   };
 
   return (
-    // تم تعديل الـ bottom هنا ليصبح أعلى في الهواتف (20px) لكي لا يغطي الفوتر، وفي الشاشات الكبيرة (6px)
-    <div ref={boxRef} style={{ position: 'fixed', left: '24px', zIndex: 9999 }} className="bottom-20 sm:bottom-6" dir={isRtl ? 'rtl' : 'ltr'}>
+    // تعديل الارتفاع ليكون مناسباً تماماً فوق الفوتر ودون مبالغة
+    <div ref={boxRef} style={{ position: 'fixed', left: '24px', zIndex: 9999 }} className="bottom-12 sm:bottom-6" dir={isRtl ? 'rtl' : 'ltr'}>
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
