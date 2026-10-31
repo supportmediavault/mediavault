@@ -1,0 +1,140 @@
+import React, { useState, useEffect } from 'react';
+
+interface PreviewModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  mediaUrl: string;
+  mediaName: string;
+  mediaType: 'image' | 'audio' | 'video';
+  isDarkMode: boolean;
+}
+
+export const PreviewModal: React.FC<PreviewModalProps> = ({
+  isOpen,
+  onClose,
+  mediaUrl,
+  mediaName,
+  mediaType,
+  isDarkMode,
+}) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
+  // إعادة تعيين الموقع للوسط عند فتح النافذة
+  useEffect(() => {
+    if (isOpen) {
+      setPosition({ x: 0, y: 0 });
+    }
+  }, [isOpen]);
+
+  // تتبع حركة السحب بالماوس بسلاسة تامة
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragStart]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[99999] bg-black/70 backdrop-blur-sm pointer-events-none">
+      <div
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px))`,
+        }}
+        onMouseDown={(e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest('button') || target.closest('a') || target.closest('audio') || target.closest('video')) {
+            return;
+          }
+          setIsDragging(true);
+          setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+        }}
+        className={`pointer-events-auto shadow-2xl flex flex-col w-[90%] max-w-sm rounded-2xl p-4 cursor-grab active:cursor-grabbing select-none transition-shadow ${
+          isDarkMode ? 'bg-slate-900 border border-slate-700 text-slate-100' : 'bg-white border border-slate-200 text-slate-800'
+        }`}
+      >
+        {/* شريط العنوان وزر الإغلاق العلوي */}
+        <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-700/25">
+          <h3 className="text-xs font-bold truncate max-w-[80%]" title={mediaName}>
+            👁️ {mediaName}
+          </h3>
+          
+          <button
+            onClick={onClose}
+            className="w-6 h-6 rounded-full flex items-center justify-center bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-colors cursor-pointer text-xs font-bold"
+            title="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* محتوى المعاينة */}
+        <div className="flex items-center justify-center bg-slate-950 rounded-xl p-2 overflow-hidden min-h-[160px] max-h-[35vh]">
+          {mediaType === 'image' && (
+            <img 
+              src={mediaUrl} 
+              alt={mediaName} 
+              className="object-contain rounded-lg shadow-md max-h-[30vh]" 
+            />
+          )}
+          {mediaType === 'audio' && (
+            <div className="w-full flex flex-col items-center space-y-2 py-4">
+              <span className="text-2xl animate-pulse">🎵</span>
+              <audio src={mediaUrl} controls className="w-full" />
+            </div>
+          )}
+          {mediaType === 'video' && (
+            <video 
+              src={mediaUrl} 
+              controls 
+              className="w-full rounded-lg shadow-md max-h-[30vh]" 
+            />
+          )}
+        </div>
+
+        {/* الأزرار بالأسفل موزعة على الأطراف */}
+        <div className="flex items-center justify-between pt-3 mt-auto">
+          <a
+            href={mediaUrl}
+            download={mediaName}
+            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-colors shadow-sm flex items-center gap-1.5"
+          >
+            📥 Download
+          </a>
+          
+          <button
+            onClick={onClose}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+              isDarkMode ? 'bg-slate-800 hover:bg-slate-700 text-slate-300' : 'bg-slate-200 hover:bg-slate-300 text-slate-800'
+            }`}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

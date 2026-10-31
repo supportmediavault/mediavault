@@ -1,0 +1,6 @@
+# السماح لجميع محركات البحث بفهرسة الموقع
+User-agent: *
+Allow: /
+
+# تحديد رابط موقعك الرسمي (استبدل example.com برابط موقعك الحقيقي لاحقاً)
+Sitemap: https://example.com/sitemap.xml

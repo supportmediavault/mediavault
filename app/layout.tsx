@@ -1,0 +1,40 @@
+import './globals.css';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'MediaVault | 100% Client-Side Media Converter',
+  description: 'Convert images, audio, and video files directly in your browser with absolute privacy guaranteed.',
+  manifest: '/manifest.json',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    'name': 'MediaVault',
+    'operatingSystem': 'All',
+    'applicationCategory': 'MultimediaApplication',
+    'offers': {
+      '@type': 'Offer',
+      'price': '0',
+      'priceCurrency': 'USD',
+    },
+    'description': 'Free, secure, and fast browser-based client-side media converter using WebAssembly.',
+  };
+
+  return (
+    <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
