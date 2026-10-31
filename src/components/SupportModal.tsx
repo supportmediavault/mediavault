@@ -91,10 +91,10 @@ export const SupportModal: React.FC<SupportModalProps> = ({
         maxWidth: '92vw',
         zIndex: 99999,
       }}
-      className={`rounded-2xl p-5 shadow-2xl border backdrop-blur-2xl transition-all ${
+      className={`rounded-2xl p-5 shadow-2xl border transition-all ${
         isDarkMode 
-          ? 'bg-slate-900/98 border-slate-700 text-slate-100 shadow-sky-950/90' 
-          : 'bg-white/98 border-sky-200 text-slate-900 shadow-2xl'
+          ? 'bg-slate-900 border-slate-700 text-slate-100 shadow-black' 
+          : 'bg-white border-sky-300 text-slate-900 shadow-2xl'
       }`}
     >
       <div className="flex justify-end items-center pb-2">
@@ -128,11 +128,11 @@ export const SupportModal: React.FC<SupportModalProps> = ({
       <div className="py-1 max-h-85 overflow-y-auto space-y-3 text-sm leading-relaxed">
         {activeTab === 'faq' && (
           <div className="space-y-2.5">
-            <div className={`p-3.5 rounded-xl border ${isDarkMode ? 'bg-slate-800/60 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+            <div className={`p-3.5 rounded-xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
               <h4 className="font-bold text-sky-400 mb-1 text-xs">🔒 {t.privacyTitle}</h4>
               <p className="opacity-90 text-xs leading-relaxed">{t.privacyDesc}</p>
             </div>
-            <div className={`p-3.5 rounded-xl border ${isDarkMode ? 'bg-slate-800/60 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+            <div className={`p-3.5 rounded-xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
               <h4 className="font-bold text-sky-400 mb-1 text-xs">⚡ {t.compressionTitle}</h4>
               <p className="opacity-90 text-xs leading-relaxed">{t.compressionDesc}</p>
             </div>
@@ -140,7 +140,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({
         )}
 
         {activeTab === 'contact' && (
-          <div className={`p-4 rounded-xl border space-y-3.5 ${isDarkMode ? 'bg-slate-800/60 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+          <div className={`p-4 rounded-xl border space-y-3.5 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
             <div className="space-y-1">
               <h4 className="font-bold text-xs text-sky-400">
                 {t.sendDirectMsg}
