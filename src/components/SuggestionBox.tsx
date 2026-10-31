@@ -27,11 +27,19 @@ export const SuggestionBox: React.FC<SuggestionBoxProps> = ({
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
@@ -67,7 +75,8 @@ export const SuggestionBox: React.FC<SuggestionBoxProps> = ({
   };
 
   return (
-    <div ref={boxRef} style={{ position: 'fixed', bottom: '80px', left: '24px', zIndex: 9999 }} dir={isRtl ? 'rtl' : 'ltr'}>
+    // تم تعديل الـ bottom هنا ليصبح أعلى في الهواتف (20px) لكي لا يغطي الفوتر، وفي الشاشات الكبيرة (6px)
+    <div ref={boxRef} style={{ position: 'fixed', left: '24px', zIndex: 9999 }} className="bottom-20 sm:bottom-6" dir={isRtl ? 'rtl' : 'ltr'}>
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
