@@ -47,13 +47,12 @@ export const AboutModal: React.FC<AboutModalProps> = ({
         maxWidth: '92vw',
         zIndex: 99999,
       }}
-      className={`rounded-2xl p-5 shadow-2xl border backdrop-blur-2xl transition-all ${
+      className={`rounded-2xl p-5 shadow-2xl border transition-all ${
         isDarkMode 
-          ? 'bg-slate-900/98 border-slate-700 text-slate-100 shadow-sky-950/90' 
-          : 'bg-white/98 border-sky-200 text-slate-900 shadow-2xl'
+          ? 'bg-slate-900 border-slate-700 text-slate-100 shadow-black' 
+          : 'bg-white border-sky-300 text-slate-900 shadow-2xl'
       }`}
     >
-      {/* رأس الصندوق: العنوان العلوي أصبح بنفس لون ودرجة عناوين المحتوى (text-sky-450 / text-sky-600) */}
       <div className="flex justify-between items-center pb-3 border-b border-slate-500/20">
         <h3 className="text-[13px] font-medium text-sky-600 dark:text-sky-400 flex items-center gap-2">
           <span className="text-base">ℹ️</span> {isRtl ? 'من نحن' : 'About Us'}
@@ -66,9 +65,8 @@ export const AboutModal: React.FC<AboutModalProps> = ({
         </button>
       </div>
 
-      {/* محتوى التعريف بالموقع */}
       <div className="py-3 space-y-3 text-xs leading-relaxed">
-        <div className={`p-3.5 rounded-xl border space-y-2 ${isDarkMode ? 'bg-slate-800/60 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+        <div className={`p-3.5 rounded-xl border space-y-2 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
           <h4 className="font-semibold text-sky-600 dark:text-sky-400 text-xs">
             {isRtl ? 'عن منصة MediaVault' : 'About MediaVault'}
           </h4>
@@ -79,7 +77,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({
           </p>
         </div>
 
-        <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-800/60 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+        <div className={`p-3 rounded-xl border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
           <p className="opacity-80 text-[11px] leading-relaxed">
             {isRtl
               ? 'الخدمة متاحة للاستخدام المباشر مع التركيز التام على أمان وسرية بياناتك.'
