@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface FooterProps {
   isDarkMode: boolean;
@@ -34,12 +34,27 @@ export const Footer: React.FC<FooterProps> = ({
   const [hoverRating, setHoverRating] = useState<number>(0);
   const [showThankYou, setShowThankYou] = useState(false);
 
-  const handleRate = (star: number) => {
-    setUserRating(star);
-    if (!ratingSubmitted) {
+  // استرجاع التقييم المحفوظ مسبقاً من المتصفح عند فتح الصفحة
+  useEffect(() => {
+    const savedRating = localStorage.getItem('mv_user_rating');
+    if (savedRating) {
+      const parsed = parseInt(savedRating, 10);
+      setUserRating(parsed);
       setRatingSubmitted(true);
-      setTotalVotes((prev) => prev + 1);
     }
+  }, [setUserRating, setRatingSubmitted]);
+
+  const handleRate = (star: number) => {
+    // إذا قام بالتقييم من قبل، نمنع إعادة التقييم لتجنب التلاعب
+    if (ratingSubmitted) return;
+
+    setUserRating(star);
+    setRatingSubmitted(true);
+    setTotalVotes((prev) => prev + 1);
+    
+    // حفظ التقييم في ذاكرة المتصفح المحلية
+    localStorage.setItem('mv_user_rating', star.toString());
+
     setShowThankYou(true);
     setTimeout(() => {
       setShowThankYou(false);
@@ -69,7 +84,7 @@ export const Footer: React.FC<FooterProps> = ({
       {/* قسم التقييم */}
       <div className="flex items-center gap-3">
         <span className={isDarkMode ? 'text-slate-100 font-bold' : 'text-slate-900 font-black'}>
-          {t.ratingTitle || 'Rate overall quality:'}
+          {ratingSubmitted ? (isRtl ? 'شكراً لتقييمك!' : 'Thank you for rating!') : (t.ratingTitle || 'Rate overall quality:')}
         </span>
         
         <div 
@@ -81,14 +96,15 @@ export const Footer: React.FC<FooterProps> = ({
             return (
               <span
                 key={star}
-                onMouseEnter={() => setHoverRating(star)}
+                onMouseEnter={() => !ratingSubmitted && setHoverRating(star)}
                 onClick={() => handleRate(star)}
                 style={{
                   fontSize: '16px',
                   color: isActive ? '#fbbf24' : (isDarkMode ? '#94a3b8' : '#64748b'),
-                  cursor: 'pointer',
+                  cursor: ratingSubmitted ? 'default' : 'pointer',
                   transition: 'color 0.15s ease'
                 }}
+                title={ratingSubmitted ? (isRtl ? 'لقد قمت بالتقييم مسبقاً' : 'Already rated') : ''}
               >
                 ★
               </span>
